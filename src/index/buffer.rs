@@ -222,10 +222,9 @@ impl<T> GlObject for IndexBuffer<T> where T: Index {
 impl<'a, T> From<&'a IndexBuffer<T>> for IndicesSource<'a> where T: Index {
     #[inline]
     fn from(buf: &'a IndexBuffer<T>) -> IndicesSource<'a> {
-        IndicesSource::IndexBuffer {
-            buffer: buf.buffer.as_slice_any(),
-            data_type: buf.get_indices_type(),
-            primitives: buf.primitives,
+        unsafe {
+            IndicesSource::from_index_buffer(buf.buffer.as_slice_any(), buf.get_indices_type(),
+                                             buf.primitives)
         }
     }
 }
@@ -288,10 +287,9 @@ impl<'a, T> From<IndexBufferSlice<'a, T>> for BufferSlice<'a, [T]> where T: Inde
 impl<'a, T> From<IndexBufferSlice<'a, T>> for IndicesSource<'a> where T: Index {
     #[inline]
     fn from(buf: IndexBufferSlice<'a, T>) -> IndicesSource<'a> {
-        IndicesSource::IndexBuffer {
-            buffer: buf.buffer.as_slice_any(),
-            data_type: buf.get_indices_type(),
-            primitives: buf.primitives,
+        unsafe {
+            IndicesSource::from_index_buffer(buf.buffer.as_slice_any(), buf.get_indices_type(),
+                                             buf.primitives)
         }
     }
 }
@@ -299,10 +297,9 @@ impl<'a, T> From<IndexBufferSlice<'a, T>> for IndicesSource<'a> where T: Index {
 impl<'a, 'r, T> From<&'r IndexBufferSlice<'a, T>> for IndicesSource<'a> where T: Index {
     #[inline]
     fn from(buf: &'r IndexBufferSlice<'a, T>) -> IndicesSource<'a> {
-        IndicesSource::IndexBuffer {
-            buffer: buf.buffer.as_slice_any(),
-            data_type: buf.get_indices_type(),
-            primitives: buf.primitives,
+        unsafe {
+            IndicesSource::from_index_buffer(buf.buffer.as_slice_any(), buf.get_indices_type(),
+                                             buf.primitives)
         }
     }
 }
@@ -363,10 +360,9 @@ impl<T> From<IndexBuffer<T>> for IndexBufferAny where T: Index {
 impl<'a> From<&'a IndexBufferAny> for IndicesSource<'a> {
     #[inline]
     fn from(buf: &'a IndexBufferAny) -> IndicesSource<'a> {
-        IndicesSource::IndexBuffer {
-            buffer: buf.buffer.as_slice_any(),
-            data_type: buf.data_type,
-            primitives: buf.primitives,
+        unsafe {
+            IndicesSource::from_index_buffer(buf.buffer.as_slice_any(), buf.data_type,
+                                             buf.primitives)
         }
     }
 }
