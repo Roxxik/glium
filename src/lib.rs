@@ -120,6 +120,7 @@ use context::CommandContext;
 mod macros;
 
 pub mod backend;
+#[macro_use]
 pub mod buffer;
 pub mod debug;
 pub mod draw_parameters;
